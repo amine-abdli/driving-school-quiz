@@ -3,7 +3,7 @@ import {
   Icon,
   QuestionImage,
   StatusPill,
-  LETTERS,
+  OPTION_NUMBERS,
 } from '../Dashboard/shared';
 import {
   formatDuration,
@@ -14,12 +14,10 @@ import {
 export default function QuizScreen({
   series,
   answers,
-  flagged,
   currentIndex,
   elapsed,
   onAnswer,
   onNavigate,
-  onFlag,
   onSubmit,
   onExit,
 }) {
@@ -96,7 +94,7 @@ export default function QuizScreen({
                       : 'Illustration de la question'
                   }
                 />
-                <span>Agrandir l’image</span>
+            
               </button>
             ) : (
               <div className="quiz-image-placeholder">
@@ -106,51 +104,8 @@ export default function QuizScreen({
             )}
           </div>
 
-          <div className="quiz-question-content">
-            <div className="question-kicker">
-              <span>
-                QUESTION {String(currentIndex + 1).padStart(2, '0')}
-              </span>
-              <StatusPill tone={multipleChoice ? 'violet' : 'blue'}>
-                {multipleChoice ? 'Plusieurs réponses' : 'Une seule réponse'}
-              </StatusPill>
-            </div>
-            <h1
-              dir={
-                isArabic(question.statement) || imageQuestion ? 'rtl' : 'ltr'
-              }
-            >
-              {question.statement ||
-                (imageQuestion
-                  ? 'اقرأ السؤال والاختيارات في الصورة'
-                  : '')}
-            </h1>
-          </div>
+          
 
-          <p className="question-instruction">
-            {multipleChoice
-              ? 'Sélectionnez toutes les bonnes réponses.'
-              : 'Sélectionnez la bonne réponse.'}
-          </p>
-
-          <div className="question-actions">
-            <button
-              className={`flag-button ${
-                flagged.includes(currentIndex) ? 'is-flagged' : ''
-              }`}
-              type="button"
-              onClick={() => onFlag(currentIndex)}
-              aria-pressed={flagged.includes(currentIndex)}
-            >
-              <Icon name="flag" size={17} />
-              {flagged.includes(currentIndex)
-                ? 'Marquée pour révision'
-                : 'Marquer pour révision'}
-            </button>
-            <span className="answer-count">
-              {answeredCount} / {QUESTION_COUNT} réponses
-            </span>
-          </div>
         </section>
 
         <aside className="question-map answer-selection-panel" aria-label="Choix de la réponse">
@@ -196,11 +151,11 @@ export default function QuizScreen({
                   name={`answer-${question.id}`}
                   checked={selected.includes(option.id)}
                   onChange={() => toggleAnswer(option.id)}
-                  aria-label={`Réponse ${LETTERS[index]}${
+                  aria-label={`Réponse ${OPTION_NUMBERS[index]}${
                     option.text ? ` : ${option.text}` : ''
                   }`}
                 />
-                <span className="answer-letter">{LETTERS[index]}</span>
+                <span className="answer-letter">{OPTION_NUMBERS[index]}</span>
                 <span className="answer-text">
                   {option.text ||
                     (imageQuestion ? 'Choix visible dans l’image' : '')}
@@ -215,9 +170,6 @@ export default function QuizScreen({
           </div>
 
           <div className="map-footer">
-            <span>
-              {answeredCount} / {QUESTION_COUNT} réponses
-            </span>
             <strong>{formatDuration(elapsed)}</strong>
           </div>
 

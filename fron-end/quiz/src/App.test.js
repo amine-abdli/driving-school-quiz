@@ -70,22 +70,33 @@ test('shows the available series and its 40-question count', () => {
   expect(within(screen.getByRole('article')).getByText(/40\s*questions/)).toBeInTheDocument();
 });
 
+test('displays saved series and progress as JSON', () => {
+  render(<App />);
+  fireEvent.click(screen.getByRole('button', { name: 'Données JSON' }));
+
+  expect(
+    screen.getByRole('heading', { name: 'Données enregistrées en JSON' }),
+  ).toBeInTheDocument();
+  expect(screen.getByText(/"title": "Les essentiels du code"/)).toBeInTheDocument();
+  expect(screen.getByText(/"progress": \{\}/)).toBeInTheDocument();
+});
+
 test('keeps a selected answer when navigating and confirms before showing corrections', () => {
   render(<App />);
   fireEvent.click(screen.getByRole('button', { name: /commencer la série/i }));
 
   expect(screen.getByRole('heading', { name: 'À un feu rouge fixe, que devez-vous faire ?' })).toBeInTheDocument();
-  fireEvent.click(screen.getByLabelText('Réponse B : Vous arrêter avant la ligne d’effet'));
+  fireEvent.click(screen.getByLabelText('Réponse 2 : Vous arrêter avant la ligne d’effet'));
   fireEvent.click(screen.getByRole('button', { name: 'Annuler' }));
-  expect(screen.getByLabelText('Réponse B : Vous arrêter avant la ligne d’effet')).not.toBeChecked();
-  fireEvent.click(screen.getByLabelText('Réponse B : Vous arrêter avant la ligne d’effet'));
-  fireEvent.click(screen.getByLabelText('Réponse C : Klaxonner avant de passer'));
-  expect(screen.getByLabelText('Réponse B : Vous arrêter avant la ligne d’effet')).not.toBeChecked();
-  fireEvent.click(screen.getByLabelText('Réponse B : Vous arrêter avant la ligne d’effet'));
+  expect(screen.getByLabelText('Réponse 2 : Vous arrêter avant la ligne d’effet')).not.toBeChecked();
+  fireEvent.click(screen.getByLabelText('Réponse 2 : Vous arrêter avant la ligne d’effet'));
+  fireEvent.click(screen.getByLabelText('Réponse 3 : Klaxonner avant de passer'));
+  expect(screen.getByLabelText('Réponse 2 : Vous arrêter avant la ligne d’effet')).not.toBeChecked();
+  fireEvent.click(screen.getByLabelText('Réponse 2 : Vous arrêter avant la ligne d’effet'));
   fireEvent.click(screen.getByRole('button', { name: 'Valider' }));
   expect(screen.getByRole('heading', { name: 'Que signifie un panneau STOP ?' })).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: /précédente/i }));
-  expect(screen.getByLabelText('Réponse B : Vous arrêter avant la ligne d’effet')).toBeChecked();
+  expect(screen.getByLabelText('Réponse 2 : Vous arrêter avant la ligne d’effet')).toBeChecked();
 
   for (let question = 0; question < 39; question += 1) {
     fireEvent.click(screen.getByRole('button', { name: 'Valider' }));
@@ -111,11 +122,11 @@ test('provides a multiple-answer question and its navigation state', () => {
   }
 
   expect(screen.getByText(/plusieurs réponses/i)).toBeInTheDocument();
-  expect(screen.getByText('Sélectionnez toutes les bonnes réponses.')).toBeInTheDocument();
-  fireEvent.click(screen.getByLabelText('Réponse A : Protéger les lieux sans vous mettre en danger'));
-  fireEvent.click(screen.getByLabelText('Réponse B : Alerter les secours si nécessaire'));
-  expect(screen.getByLabelText('Réponse A : Protéger les lieux sans vous mettre en danger')).toBeChecked();
-  expect(screen.getByLabelText('Réponse B : Alerter les secours si nécessaire')).toBeChecked();
+  expect(screen.queryByText('Sélectionnez toutes les bonnes réponses.')).not.toBeInTheDocument();
+  fireEvent.click(screen.getByLabelText('Réponse 1 : Protéger les lieux sans vous mettre en danger'));
+  fireEvent.click(screen.getByLabelText('Réponse 2 : Alerter les secours si nécessaire'));
+  expect(screen.getByLabelText('Réponse 1 : Protéger les lieux sans vous mettre en danger')).toBeChecked();
+  expect(screen.getByLabelText('Réponse 2 : Alerter les secours si nécessaire')).toBeChecked();
 });
 
 test('keeps images optional and supports uploading an image to a question', async () => {

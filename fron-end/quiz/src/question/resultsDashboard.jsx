@@ -3,7 +3,7 @@ import {
   Icon,
   QuestionImage,
   StatusPill,
-  LETTERS,
+  OPTION_NUMBERS,
 } from '../Dashboard/shared';
 import { formatDuration, QUESTION_COUNT, scoreQuiz } from '../utils/quiz';
 
@@ -188,7 +188,7 @@ export default function ResultsDashboard({
             <h3
               dir={
                 /[\u0600-\u06ff]/.test(question.statement || '') ||
-                question.source === 'image'
+                (question.source === 'image' && !question.statement)
                   ? 'rtl'
                   : 'ltr'
               }
@@ -223,7 +223,7 @@ export default function ResultsDashboard({
                     key={option.id}
                     dir={/[\u0600-\u06ff]/.test(option.text || '') ? 'rtl' : 'ltr'}
                   >
-                    <span className="answer-letter">{LETTERS[index]}</span>
+                    <span className="answer-letter">{OPTION_NUMBERS[index]}</span>
                     <span className="answer-text">
                       {option.text ||
                         (question.source === 'image'

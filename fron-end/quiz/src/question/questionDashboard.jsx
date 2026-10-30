@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Icon, QuestionImage, LETTERS } from '../Dashboard/shared';
+import { Icon, QuestionImage, OPTION_NUMBERS } from '../Dashboard/shared';
 import { createBlankQuestion } from '../fack-data/data';
 import {
   isMultipleChoice,
@@ -581,10 +581,10 @@ function QuestionForm({
         </div>
         {question.options.map((option, index) => (
           <div className="option-editor-row" key={option.id}>
-            <span className="answer-letter">{LETTERS[index]}</span>
+            <span className="answer-letter">{OPTION_NUMBERS[index]}</span>
             {source === 'manual' && (
               <input
-                aria-label={`Proposition ${LETTERS[index]}`}
+                aria-label={`Proposition ${OPTION_NUMBERS[index]}`}
                 required
                 value={option.text}
                 onChange={(event) =>
@@ -597,7 +597,7 @@ function QuestionForm({
                     ),
                   })
                 }
-                placeholder={`Proposition ${LETTERS[index]}`}
+                placeholder={`Proposition ${OPTION_NUMBERS[index]}`}
                 maxLength={220}
               />
             )}
@@ -721,7 +721,7 @@ function QuestionPreview({ question, onClose, onConfirm }) {
                 className={`preview-option ${isCorrect ? 'correct' : ''}`}
                 key={option.id}
               >
-                <span className="answer-letter">{LETTERS[index]}</span>
+                <span className="answer-letter">{OPTION_NUMBERS[index]}</span>
                 <span>
                   {option.text ||
                     (question.source === 'image'

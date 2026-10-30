@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const LETTERS = ['A', 'B', 'C', 'D'];
+export const OPTION_NUMBERS = ['1', '2', '3', '4'];
 
 export function Icon({ name, size = 20 }) {
   const paths = {
@@ -90,7 +90,7 @@ export function QuestionImage({ src, alt }) {
   return <img className="question-image" src={src} alt={alt} onError={() => setFailed(true)} />;
 }
 
-export function Header({ onHome, onManage, screen }) {
+export function Header({ onHome, onManage, onData, screen }) {
   return (
     <header className="app-header">
       <button
@@ -121,6 +121,13 @@ export function Header({ onHome, onManage, screen }) {
           onClick={onManage}
         >
           Gestion
+        </button>
+        <button
+          className={screen === 'data' ? 'nav-link active' : 'nav-link'}
+          type="button"
+          onClick={onData}
+        >
+          Données JSON
         </button>
       </nav>
       <div className="header-profile">

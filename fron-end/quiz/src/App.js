@@ -164,6 +164,7 @@ function App() {
       <Header
         onHome={backHome}
         onManage={() => setScreen('manage')}
+        onData={() => setScreen('data')}
         screen={screen}
       />
       {storageError && (
@@ -190,12 +191,10 @@ function App() {
         <QuizScreen
           series={selectedSeries}
           answers={answers}
-          flagged={flagged}
           currentIndex={currentIndex}
           elapsed={elapsed}
           onAnswer={updateAnswer}
           onNavigate={navigateQuestion}
-          onFlag={toggleFlag}
           onSubmit={submitQuiz}
           onExit={backHome}
         />
@@ -215,6 +214,20 @@ function App() {
           initialSeriesId={selectedSeriesId}
           onBack={backHome}
         />
+      )}
+      {screen === 'data' && (
+        <main className="page-shell json-data-shell">
+          <section aria-labelledby="json-data-title">
+            <h1 id="json-data-title">Données enregistrées en JSON</h1>
+            <p>
+              Voici les séries et la progression sauvegardées dans ce
+              navigateur.
+            </p>
+            <pre className="json-data">
+              <code>{JSON.stringify({ series, progress }, null, 2)}</code>
+            </pre>
+          </section>
+        </main>
       )}
     </div>
   );
